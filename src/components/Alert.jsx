@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../styles/alert.styles.css"
 
 function Alert({ message, setMessage }) {
-    console.log(message)
+    // console.log(message)
   return (
     message && <div className="custom-alert-overlay">
       <div className="custom-alert-box">

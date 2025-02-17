@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {  CircularProgress, Typography } from "@mui/material";
 import {
   TextField,
   Button,
@@ -16,7 +18,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import OTPInput from "react-otp-input";
 import Alert from "./Alert";
-import { sendOtp } from "../api/auth.api";
+import { handleSignIn, sendOtp, verifyOtp } from "../api/auth.api";
 
 function AuthPage() {
   const [tabValue, setTabValue] = useState(0);
@@ -25,9 +27,17 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [otp, setOtp] = useState("");
+  const [recievedOtp,setRecievedOtp]=useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [message, setMessage] = useState("");
   const [otpTimer, setOtpTimer] = useState(0);
+  const navigate = useNavigate();
+  const [waiting,setWaiting]=useState(false);
+
+  useEffect(()=>{
+    let user = localStorage.getItem("user");
+    if(user) navigate("/")
+  },[])
 
   useEffect(() => {
     let timer;
@@ -38,7 +48,7 @@ function AuthPage() {
   }, [otpTimer]);
 
   const handleSendOtp = () => {
-    if (!email || !phone || !password || !confirmPassword) {
+    if (!email  || !password || !confirmPassword) {
       setMessage("Please enter valid data!");
       return;
     }
@@ -50,21 +60,17 @@ function AuthPage() {
       setMessage("Passwords do not match!");
       return;
     }
-    if (phone.length !== 10 || !/^[6789]\d{9}$/.test(phone)) {
-      setMessage("Please enter a valid WhatsApp number!");
-      return;
-    }
-    sendOtp(email, password, phone)
-      .then(() => {
-        setOtpSent(true);
-        setOtpTimer(60);
-        setMessage(`OTP sent to ${phone} and email ${email}`);
-      })
+    // if (phone.length !== 10 || !/^[6789]\d{9}$/.test(phone)) {
+    //   setMessage("Please enter a valid WhatsApp number!");
+    //   return;
+    // }
+    sendOtp(email, password,setMessage,setRecievedOtp,setOtpSent,setOtpTimer,setWaiting)
       .catch(() => {
-        setMessage("Some error occurred!");
+        // setMessage("Some error occurred!");
       });
   };
 
+  // const handleOtpVerify = ()
   const resetForm = () => {
     setEmail("");
     setPhone("");
@@ -74,6 +80,8 @@ function AuthPage() {
     setOtpSent(false);
     setOtpTimer(0);
   };
+
+  
 
   return (
     <Container maxWidth="sm">
@@ -87,12 +95,12 @@ function AuthPage() {
             disabled={otpSent} margin="normal" variant="outlined"
             InputProps={{ startAdornment: (<InputAdornment position="start"><EmailIcon /></InputAdornment>) }}
           />
-          {tabValue === 1 && (
+          {/* {tabValue === 1 && (
             <TextField fullWidth label="WhatsApp Number" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
               disabled={otpSent} margin="normal" variant="outlined"
               InputProps={{ startAdornment: (<IconButton position="start"><WhatsAppIcon /></IconButton>) }}
             />
-          )}
+          )} */}
           <TextField fullWidth label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
             disabled={otpSent} margin="normal" variant="outlined"
             InputProps={{ startAdornment: (<InputAdornment position="start"><LockIcon /></InputAdornment>) }}
@@ -121,14 +129,18 @@ function AuthPage() {
               </Grid>
             )}
             <Grid item xs={12}>
-              <Button fullWidth variant="contained" type="submit">
-                {tabValue === 0 ? "Sign In" : "Sign Up"}
+              <Button  disabled={waiting} fullWidth onClick={tabValue===0 ?(e)=>handleSignIn(email,password,setMessage,e,navigate,setWaiting) :(e)=>verifyOtp(email,otp,setMessage,e,navigate,setWaiting)} variant="contained" type="submit">
+                {waiting ? "Please Wait... ":tabValue === 0 ? "Sign In" : "Sign Up"}
               </Button>
+              
             </Grid>
           </Grid>
         </Box>
       </Paper>
       <Alert message={message} setMessage={setMessage} />
+      {/* <div class="spinner-border text-dark" role="status"> */}
+  {/* <span class="visually-hidden">Loading...</span> */}
+{/* </div> */}
     </Container>
   );
 }

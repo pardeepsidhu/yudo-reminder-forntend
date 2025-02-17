@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,15 +14,27 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import logo from "../icon/logo.png"
 import Alert from "./Alert";
+import { useNavigate } from "react-router-dom";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 
-const pages = ["Home", "All Reminders", "Add Reminder"];
-const settings = ["Profile", "About", "Code", "Logout"];
+const pages = ["Home", "All Reminders", "Add Reminder","Logout","About"];
+const settings = ["About", "Code", "Logout"];
 
 
 function Nav() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [openDialog,setOpenDialog]=useState(false)
+  const navigate = useNavigate()
   const [message,setMessage]=useState("")
+  const [user,setUser]=useState(false);
+
+  useEffect(()=>{
+    let user =localStorage.getItem("user")
+    if(user){
+      setUser(true)
+    }
+  },[])
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -39,13 +51,30 @@ function Nav() {
     setAnchorElUser(null);
   };
 
-  const handleSettingClick =(setting)=>{
-    if(setting=="Logout"){
-      localStorage.clear();
-      setMessage("Logout Successfuly !")
-      
+
+  const handlePageChange =(page)=>{
+    if(page ==="All Reminders"){
+      navigate("/allreminder")
+    }
+    else if(page ==="Home"){
+      navigate("/")
+    }
+    else if(page==="Add Reminder"){
+      navigate("/inbox")
+    }
+    if(page==="About"){
+      navigate("/about")
+    }
+    else if(page === 'Logout'){
+      if(user){
+        setOpenDialog(true)
+      }
+      else{
+        navigate("/login")
+      }
     }
   }
+ 
   return (
     <AppBar style={{position:"sticky",top:'0px',zIndex:"3"}} position="static">
       <Container maxWidth="xl">
@@ -54,7 +83,7 @@ function Nav() {
             variant="h6"
             noWrap
             component="a"
-            href="#"
+  
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -91,7 +120,7 @@ function Nav() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography onClick={()=>handlePageChange(page)} textAlign="center">{page !=="Logout"?page: user?"Logout":"Login"}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -122,10 +151,11 @@ function Nav() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={()=>{handleCloseNavMenu(); handlePageChange(page);}}
                 sx={{ my: 2, color: "white", display: "block" }}
+                // onClick={()=>handlePageChange(page)}
               >
-                {page}
+                {page !=="Logout"?page: user?"Logout":"Login"}
               </Button>
             ))}
           </Box>
@@ -137,7 +167,7 @@ function Nav() {
                 <Avatar   alt="User" src={logo} />
               </IconButton>
             </Tooltip>
-            <Menu
+            {/* <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
@@ -152,11 +182,24 @@ function Nav() {
                   <Typography onClick={()=>handleSettingClick(setting)} textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
-            </Menu>
+            </Menu> */}
           </Box>
         </Toolbar>
       </Container>
       <Alert message={message} setMessage={setMessage} />
+    
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Confirm Logout</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to logout ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button onClick={()=>{localStorage.clear();setUser(false); navigate("/"); setOpenDialog(false)}} color="error">Logout</Button>
+        </DialogActions>
+      </Dialog>
     </AppBar>
   );
 }
