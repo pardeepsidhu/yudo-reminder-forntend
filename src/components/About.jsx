@@ -46,7 +46,7 @@ const AboutPage = () => {
               <li>OTP Verification for Secure Access</li>
               <li>Email Scheduling at User-Defined Time</li>
               <li>User Authentication (Login & Logout)</li>
-              <li>Integration with ChatGPT API for Writing Emails</li>
+              <li>Integration with <strong>google gemini</strong> API for Writing Emails</li>
             </ul>
 
             <Typography variant="h6" sx={{ mt: 2 }}>🛠️ Tech Stack:</Typography>

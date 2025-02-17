@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { deleteEmail, getAll } from "../api/schedule.api";
 import Alert from "./Alert";
 
-const ShowAllEmails = () => {
+const ShowAllEmails = ({setMessage}) => {
   const [filterStatus, setFilterStatus] = useState("All");
   const [deleteId, setDeleteId] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -14,7 +14,6 @@ const ShowAllEmails = () => {
   const [waiting, setWaiting] = useState(false);
   const [emails, setEmails] = useState([]);
   const [filteredEmails, setFilteredEmails] = useState([]);
-  const [message, setMessage] = useState("");
   const [total,setTotal]=useState(0)
   const [limit, setLimit] = useState(100);
   const navigate = useNavigate();
@@ -147,8 +146,7 @@ const ShowAllEmails = () => {
           <span>Loading...</span>
         </div>
       )}
-      
-<Alert message={message} setMessage={setMessage} />
+
 
     </>
   );

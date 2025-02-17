@@ -21,20 +21,12 @@ const pages = ["Home", "All Reminders", "Add Reminder","Logout","About"];
 const settings = ["About", "Code", "Logout"];
 
 
-function Nav() {
+function Nav({user,setUser,setMessage}) {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [openDialog,setOpenDialog]=useState(false)
   const navigate = useNavigate()
-  const [message,setMessage]=useState("")
-  const [user,setUser]=useState(false);
 
-  useEffect(()=>{
-    let user =localStorage.getItem("user")
-    if(user){
-      setUser(true)
-    }
-  },[])
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -186,7 +178,6 @@ function Nav() {
           </Box>
         </Toolbar>
       </Container>
-      <Alert message={message} setMessage={setMessage} />
     
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>Confirm Logout</DialogTitle>

@@ -34,7 +34,7 @@ const sendOtp=async(email,password,setMessage,setOtp,setOtpSent,setOtpTimer,setW
     setWaiting(false)
 }
 
-const handleSignIn = async(email,password,setMessage,e,navigate,setWaiting)=>{
+const handleSignIn = async(email,password,setMessage,e,navigate,setWaiting,setUser)=>{
     try {
         setWaiting(true)
         if (e && e.preventDefault) e.preventDefault(); 
@@ -57,6 +57,7 @@ const handleSignIn = async(email,password,setMessage,e,navigate,setWaiting)=>{
         }
         else{
             setMessage("Login Successfuly !");
+            setUser(true)
             localStorage.setItem("user",JSON.stringify(data))
             navigate("/")
         }
@@ -69,7 +70,7 @@ const handleSignIn = async(email,password,setMessage,e,navigate,setWaiting)=>{
     }
 }
 
-const verifyOtp = async (email, otp, setMessage, e,navigate,setWaiting) => {
+const verifyOtp = async (email, otp, setMessage, e,navigate,setWaiting,setUser) => {
     try {
         setWaiting(true)
         if (e && e.preventDefault) e.preventDefault(); 
@@ -90,6 +91,7 @@ const verifyOtp = async (email, otp, setMessage, e,navigate,setWaiting) => {
         }
 
         localStorage.setItem("user", JSON.stringify(jsonData));
+        setUser(true)
         setMessage("Signup Successfully !");
         navigate("/")
         

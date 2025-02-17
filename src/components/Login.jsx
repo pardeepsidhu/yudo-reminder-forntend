@@ -20,7 +20,7 @@ import OTPInput from "react-otp-input";
 import Alert from "./Alert";
 import { handleSignIn, sendOtp, verifyOtp } from "../api/auth.api";
 
-function AuthPage() {
+function AuthPage({setUser,setMessage}) {
   const [tabValue, setTabValue] = useState(0);
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -29,7 +29,6 @@ function AuthPage() {
   const [otp, setOtp] = useState("");
   const [recievedOtp,setRecievedOtp]=useState("");
   const [otpSent, setOtpSent] = useState(false);
-  const [message, setMessage] = useState("");
   const [otpTimer, setOtpTimer] = useState(0);
   const navigate = useNavigate();
   const [waiting,setWaiting]=useState(false);
@@ -111,12 +110,19 @@ function AuthPage() {
               InputProps={{ startAdornment: (<InputAdornment position="start"><LockIcon /></InputAdornment>) }}
             />
           )}
+
+
           {tabValue === 1 && otpSent && (
-            <OTPInput  value={otp} onChange={setOtp} numInputs={4} separator={<span>-</span>}
+            <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+            <OTPInput style={{display:"flex",justifyContent:"center",textAlign:"center"}} value={otp} onChange={setOtp} numInputs={4} separator={<span>-</span>}
               renderInput={(props) => <input {...props} />}
-              inputStyle={{ width: "40px", height: "40px", margin: "5px", fontSize: "20px", justifyContent:"center", textAlign: "center", border: "1px solid #ccc", borderRadius: "5px" }}
+              inputStyle={{display:"flex", width: "40px", height: "40px", margin: "5px", fontSize: "20px", justifyContent:"center", textAlign: "center", border: "1px solid #ccc", borderRadius: "5px" }}
             />
+            </div>
           )}
+
+
+
           <Grid container spacing={2} sx={{ mt: 2 }}>
             {tabValue === 1 && (
               <Grid item xs={12}>
@@ -128,8 +134,11 @@ function AuthPage() {
                 </Button>
               </Grid>
             )}
+
+
+
             <Grid item xs={12}>
-              <Button  disabled={waiting} fullWidth onClick={tabValue===0 ?(e)=>handleSignIn(email,password,setMessage,e,navigate,setWaiting) :(e)=>verifyOtp(email,otp,setMessage,e,navigate,setWaiting)} variant="contained" type="submit">
+              <Button  disabled={waiting} fullWidth onClick={tabValue===0 ?(e)=>handleSignIn(email,password,setMessage,e,navigate,setWaiting,setUser) :(e)=>verifyOtp(email,otp,setMessage,e,navigate,setWaiting,setUser)} variant="contained" type="submit">
                 {waiting ? "Please Wait... ":tabValue === 0 ? "Sign In" : "Sign Up"}
               </Button>
               
@@ -137,7 +146,6 @@ function AuthPage() {
           </Grid>
         </Box>
       </Paper>
-      <Alert message={message} setMessage={setMessage} />
       {/* <div class="spinner-border text-dark" role="status"> */}
   {/* <span class="visually-hidden">Loading...</span> */}
 {/* </div> */}
