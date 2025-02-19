@@ -1,5 +1,5 @@
 const sendOtp=async(email,password,setMessage,setOtp,setOtpSent,setOtpTimer,setWaiting)=>{
-    console.log(process.env.REACT_APP_BASE_URL)
+    // console.log(process.env.REACT_APP_BASE_URL)
     try {
         setWaiting(true)
         let data = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/user/sendotp`,{
@@ -13,7 +13,7 @@ const sendOtp=async(email,password,setMessage,setOtp,setOtpSent,setOtpTimer,setW
             })
         })
         data = await data.json();
-        console.log(data)
+        // console.log(data)
         if(data.error) {
             setMessage(data.error)
             return;
@@ -27,7 +27,7 @@ const sendOtp=async(email,password,setMessage,setOtp,setOtpSent,setOtpTimer,setW
         
         
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         setMessage("some error accured !")
         return {error:"some error accured !"}
     }
@@ -50,7 +50,7 @@ const handleSignIn = async(email,password,setMessage,e,navigate,setWaiting,setUs
             })
         })
         data = await data.json();
-        console.log(data)
+        // console.log(data)
         if(data.error) {
             setMessage(data.error)
             return;

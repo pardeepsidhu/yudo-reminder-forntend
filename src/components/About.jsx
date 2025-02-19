@@ -3,7 +3,7 @@ import { Container, Typography, Card, CardContent, Button, Box, Link, Grid, Avat
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import EmailIcon from "@mui/icons-material/Email";
-import developerPng from "../icon/develper.png"
+import developerPng from "../icon/logo.png"
 
 const BackgroundImage = "https://images.unsplash.com/photo-1531297484001-80022131f5a1";
 // const BackgroundImage = "https://images.unsplash.com/photo-1526772662000-3f88f10405ff";
@@ -45,6 +45,7 @@ const AboutPage = () => {
             <ul>
               <li>OTP Verification for Secure Access</li>
               <li>Email Scheduling at User-Defined Time</li>
+              <li><strong>Telegram</strong> message Scheduling at User-Defined Time</li>
               <li>User Authentication (Login & Logout)</li>
               <li>Integration with <strong>google gemini</strong> API for Writing Emails</li>
             </ul>

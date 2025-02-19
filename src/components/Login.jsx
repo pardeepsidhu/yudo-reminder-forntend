@@ -51,6 +51,12 @@ function AuthPage({setUser,setMessage}) {
       setMessage("Please enter valid data!");
       return;
     }
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) {
+    setMessage("Please enter a valid email address");
+    return;
+  }
     if (password.length < 8) {
       setMessage("Password must have at least 8 characters");
       return;
@@ -138,7 +144,7 @@ function AuthPage({setUser,setMessage}) {
 
 
             <Grid item xs={12}>
-              <Button  disabled={waiting} fullWidth onClick={tabValue===0 ?(e)=>handleSignIn(email,password,setMessage,e,navigate,setWaiting,setUser) :(e)=>verifyOtp(email,otp,setMessage,e,navigate,setWaiting,setUser)} variant="contained" type="submit">
+              <Button  disabled={tabValue===0?waiting: (waiting || !otpSent)} fullWidth onClick={tabValue===0 ?(e)=>handleSignIn(email,password,setMessage,e,navigate,setWaiting,setUser) :(e)=>verifyOtp(email,otp,setMessage,e,navigate,setWaiting,setUser)} variant="contained" type="submit">
                 {waiting ? "Please Wait... ":tabValue === 0 ? "Sign In" : "Sign Up"}
               </Button>
               
@@ -146,9 +152,9 @@ function AuthPage({setUser,setMessage}) {
           </Grid>
         </Box>
       </Paper>
-      {/* <div class="spinner-border text-dark" role="status"> */}
-  {/* <span class="visually-hidden">Loading...</span> */}
-{/* </div> */}
+      {/* <div class="spinner-border text-dark" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div> */}
     </Container>
   );
 }

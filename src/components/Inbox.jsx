@@ -8,6 +8,7 @@ import Alert from "./Alert";
 import { useNavigate } from "react-router-dom";
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { generateAIContent } from "../api/AI.api";
+import NotificationsActive from "@mui/icons-material/NotificationsActive";
 
 const YuduGramEmailScheduler = ({ setMessage }) => {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ const YuduGramEmailScheduler = ({ setMessage }) => {
       <Card sx={{ maxWidth: 500, p: 3, boxShadow: 3, borderRadius: 3, backgroundColor: "white" }}>
         <CardContent>
           <Typography variant="h5" gutterBottom textAlign="center" fontWeight="bold" color="primary">
-            Yudo-Reminder Email Scheduler
+            Yudo-Reminder Scheduler <NotificationsActive/>
           </Typography>
           <Box display="flex" alignItems="center" gap={1}>
           <TextField
@@ -97,7 +98,7 @@ const YuduGramEmailScheduler = ({ setMessage }) => {
             sx={{ mt: 3, py: 1.5, fontSize: "1rem", fontWeight: "bold" }}
             onClick={() => scheduleEmail(emailDetails, setMessage, navigate, setWaiting, token)}
           >
-            {waiting ? "Please Wait... " : "Schedule Email"}
+            {waiting ? "Please Wait... " : "Schedule Reminder"}
           </Button>
         </CardContent>    
       </Card>

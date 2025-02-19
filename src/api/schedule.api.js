@@ -1,5 +1,6 @@
 const scheduleEmail = async(EmailDetails,setMessage,navigate,setWaiting,token)=>{
     try {
+        
         setWaiting(true)
         const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/email/schedule`, {
             method: "POST",
@@ -8,7 +9,7 @@ const scheduleEmail = async(EmailDetails,setMessage,navigate,setWaiting,token)=>
                 "auth-token":token
             },
             body: JSON.stringify({
-                 subject:EmailDetails.subject,
+                subject:EmailDetails.subject,
                 body:EmailDetails.message,
                 scheduleTime:EmailDetails.scheduledTime 
             }),
@@ -23,7 +24,7 @@ const scheduleEmail = async(EmailDetails,setMessage,navigate,setWaiting,token)=>
             navigate("/allreminder")
         }
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         setMessage("Some Error Accured !")
     }
     finally{
@@ -44,12 +45,13 @@ const getAll =async(token,setMessage,setEmails,setWaiting,limit,setTotal)=>{
             setMessage(emails.error)
         }
         else{
+            // console.log(emails)
             setEmails(emails.emails)
             setTotal(emails.total)
-            console.log(emails)
+            // console.log(emails)
         }
     } catch (error) {
-        console.log("this is eerrro "+error)
+        // console.log("this is eerrro "+error)
         setMessage("Some Error Accured !")
     }
     finally{
@@ -60,7 +62,7 @@ const getAll =async(token,setMessage,setEmails,setWaiting,limit,setTotal)=>{
 const deleteEmail = async (jobId, setMessage, token, setFilteredEmails, filteredEmails, setOpenDialog) => {
     try {
         setOpenDialog(false)
-        console.log(`Deleting email with jobId: ${jobId}`);
+        // console.log(`Deleting email with jobId: ${jobId}`);
 
         let response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/email/delete/${jobId}`, {
             method: "DELETE",
@@ -70,7 +72,7 @@ const deleteEmail = async (jobId, setMessage, token, setFilteredEmails, filtered
         });
 
         let data = await response.json();
-        console.log("Response:", data);
+        // console.log("Response:", data);
 
         if (data.error) {
             setMessage(data.error);

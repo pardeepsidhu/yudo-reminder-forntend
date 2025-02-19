@@ -5,6 +5,10 @@ import EmailIcon from "@mui/icons-material/Email";
 import { useNavigate } from "react-router-dom";
 import { deleteEmail, getAll } from "../api/schedule.api";
 import Alert from "./Alert";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+// import NotificationsActive from "@mui/icons-material/NotificationsActive";
+
+
 
 const ShowAllEmails = ({setMessage}) => {
   const [filterStatus, setFilterStatus] = useState("All");
@@ -19,6 +23,14 @@ const ShowAllEmails = ({setMessage}) => {
   const navigate = useNavigate();
   const [date, setDate] = useState(Date.now());
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDate(Date.now());
+    }, 5000);
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
+  }, []);
+  
   useEffect(() => {
     let user = localStorage.getItem("user");
     if (!user) {
@@ -65,8 +77,9 @@ const ShowAllEmails = ({setMessage}) => {
             <CardContent>
               <div style={{ position: "sticky", top: "0px", zIndex: "2", background: "white", paddingTop: "10px" }}>
                 <Typography align="center" variant="h5" gutterBottom color="primary">
-                  <EmailIcon /> All Emails
+                <NotificationsActiveIcon fontSize="large" sx={{ color: "#1976d2" }} />  All Reminders
                 </Typography>
+              
                 <Box sx={{ display: "flex", gap: 2, mb: 2, flexWrap: "wrap", position: "sticky", zIndex: "5" }}>
                   <FormControl sx={{ flex: 1, minWidth: 150 }}>
                     <InputLabel style={{ color: "#1976d2", fontWeight: "bolder" }} id="status-filter-label">Status Filter</InputLabel>

@@ -11,7 +11,7 @@ const generateAIContent = async (aiPrompt,setEmailDetails,setWaiting,setMessage,
         }),
       });
       const data = await response.json();
-      console.log(data)
+      // console.log(data)
     if(data.error){
         setMessage(data.error)
     }
@@ -20,7 +20,7 @@ const generateAIContent = async (aiPrompt,setEmailDetails,setWaiting,setMessage,
         setEmailDetails({scheduledTime:EmailDetails.scheduledTime,message,subject})
     }
     } catch (error) {
-        console.log(error)
+        // console.log(error)
      setMessage("Some Error Accured While Genrating AI Content !")
     }
     finally{
